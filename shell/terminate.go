@@ -7,5 +7,5 @@ const (
 )
 
 func terminate() {
-	fmt.Println(shellLogoutText)
+	fmt.Println("\n" + shellLogoutText)
 }
