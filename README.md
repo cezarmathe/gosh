@@ -14,7 +14,7 @@ Gosh comes with 4 builtin prompt items:
 - hostname: displays your hostname
 - workdir: displays your current working directory
   - paths relative to $HOME are printed as `~/path`
-- command: prints a `:` so that it clears that the user can enter a command
+- command: prints a `:` so that it is clear that the user can enter a command
 
 ## Install instructions
 
