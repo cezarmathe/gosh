@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-
+	// Start the shell
 	shell.Run()
-
 }

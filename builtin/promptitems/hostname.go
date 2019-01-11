@@ -21,6 +21,6 @@ func (i HostnameItem) Print() {
 	fmt.Print("@" + i.Hostname)
 }
 
-func (i HostnameItem) PrintPrefix() {
+func (i HostnameItem) Prefix() {
 	// fmt.Print(" ")
 }

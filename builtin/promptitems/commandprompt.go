@@ -19,6 +19,6 @@ func (i CommandpromptItem) Print() {
 	fmt.Print(i.Prompt)
 }
 
-func (i CommandpromptItem) PrintPrefix() {
+func (i CommandpromptItem) Prefix() {
 	fmt.Print(" ")
 }

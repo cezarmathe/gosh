@@ -29,6 +29,6 @@ func (i WorkdirItem) Print() {
 	}
 }
 
-func (i WorkdirItem) PrintPrefix() {
+func (i WorkdirItem) Prefix() {
 	fmt.Print(" ")
 }

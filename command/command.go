@@ -1,15 +1,15 @@
 package command
 
 import (
+	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 )
 
 // Command contains the parameters for executing a certain command
 type Command struct {
-	Exec string
-	Args []string
+	Name string
+	Argv []string
 }
 
 // GetCommand returns a command from a string
@@ -21,41 +21,57 @@ func GetCommand(text string) Command {
 		return Command{}
 	} else if len(fields) == 1 {
 		return Command{
-			Exec: fields[0],
+			Name: fields[0],
+			Argv: []string{fields[0]},
 		}
 	} else {
 		return Command{
-			Exec: fields[0],
-			Args: fields[1:],
+			Name: fields[0],
+			Argv: fields,
 		}
 	}
 }
 
 // HasArgs returns true if the command has arguments or false if it does not have arguments
-func (c Command) HasArgs() bool {
-	if len(c.Args) == 0 {
-		return false
-	}
-	return true
-}
+// func (c Command) HasArgs() bool {
+// 	if len(c.Argv) == 0 {
+// 		return false
+// 	}
+// 	return true
+// }
 
 // Execute executes the command
-func (c Command) Execute() {
+func (c Command) Execute(files []*os.File) {
 
-	var cmd *exec.Cmd
+	process, err := os.StartProcess(c.Name, c.Argv, &os.ProcAttr{
+		Files: files,
+	})
 
-	if c.HasArgs() {
-		cmd = exec.Command(c.Exec, c.Args...)
-	} else if c.Exec == "" {
+	if err != nil {
+		fmt.Println(err)
 		return
-	} else {
-		cmd = exec.Command(c.Exec)
 	}
 
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	_, err = process.Wait()
 
-	cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// var cmd *exec.Cmd
+
+	// if c.HasArgs() {
+	// 	cmd = exec.Command(c.Exec, c.Args...)
+	// } else if c.Exec == "" {
+	// 	return
+	// } else {
+	// 	cmd = exec.Command(c.Exec)
+	// }
+
+	// cmd.Stdin = os.Stdin
+	// cmd.Stdout = os.Stdout
+	// cmd.Stderr = os.Stderr
+
+	// cmd.Run()
 
 }

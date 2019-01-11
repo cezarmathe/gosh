@@ -1,6 +1,6 @@
 package prompt
 
-// Prompt contains what needs to be displayed when entering a command
+// Prompt contains what needs to be displayed before asking for user input
 type Prompt struct {
 	Items []Item
 }
@@ -9,7 +9,7 @@ type Prompt struct {
 func (p *Prompt) Print() {
 	for i := 0; i < len(p.Items); i++ {
 		if i != 0 {
-			p.Items[i].PrintPrefix()
+			p.Items[i].Prefix()
 		}
 		p.Items[i].Print()
 	}

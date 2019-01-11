@@ -2,15 +2,15 @@ package shell
 
 import (
 	"fmt"
-
-	"github.com/cezarmathe/gosh/builtin"
-	"github.com/cezarmathe/gosh/command"
+	"os"
+	"strings"
 )
 
 func interpret() {
-
+	// print the prompt
 	shellPrompt.Print()
 
+	// read user input
 	text, err := readInput()
 
 	if err != nil {
@@ -18,13 +18,17 @@ func interpret() {
 		return
 	}
 
-	com := command.GetCommand(text)
-
-	if builtin.BuiltinCommand(com) {
+	// if no input is given, return
+	if text == "" {
 		return
 	}
 
-	com.Execute()
+	fields := strings.Fields(text)
+	if len(fields) == 1 {
+		processController.StartProcess(fields[0], []string{}, &os.ProcAttr{Files: shellFiles})
+	} else {
+		processController.StartProcess(fields[0], fields[1:], &os.ProcAttr{Files: shellFiles})
+	}
 
 }
 

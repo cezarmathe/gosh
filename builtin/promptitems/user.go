@@ -21,6 +21,6 @@ func (i UserItem) Print() {
 	fmt.Print(i.Username)
 }
 
-func (i UserItem) PrintPrefix() {
+func (i UserItem) Prefix() {
 	fmt.Print(" ")
 }
