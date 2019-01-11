@@ -1,13 +1,9 @@
 package command
 
 import (
-	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"strings"
-
-	"github.com/kr/pty"
 )
 
 // Command contains the parameters for executing a certain command
@@ -56,11 +52,10 @@ func (c Command) Execute() {
 		cmd = exec.Command(c.Exec)
 	}
 
-	in, err := pty.Start(cmd)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
-	io.Copy(os.Stdout, in)
+	cmd.Run()
+
 }

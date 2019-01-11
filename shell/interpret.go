@@ -8,6 +8,7 @@ import (
 )
 
 func interpret() {
+
 	shellPrompt.Print()
 
 	text, err := readInput()
