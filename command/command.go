@@ -17,14 +17,13 @@ func GetCommand(text string) Command {
 
 	fields := strings.Fields(text)
 
-	if len(fields) > 1 {
-		return Command{
-			Exec: fields[0],
-			Args: fields[1:],
-		}
+	if len(fields) == 0 {
+		return Command{}
 	}
+
 	return Command{
 		Exec: fields[0],
+		Args: fields[1:],
 	}
 }
 
