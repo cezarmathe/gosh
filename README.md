@@ -18,10 +18,7 @@ Gosh comes with 4 builtin prompt items:
 
 ## Install instructions
 
-This installation process assumes you have the Go environment variables properly set up and that you added GOBIN to your PATH.
-
-- `$ git clone https://github.com/cezarmathe/gosh.git`
-- `$ cd gosh`
-- `$ go install`
-
-After this, you can run `$ gosh` to start the shell.
+Download and install:
+```bash
+go get github.com/cezarmathe/gosh
+```
