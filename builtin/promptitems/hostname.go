@@ -22,5 +22,5 @@ func (i HostnameItem) Print() {
 }
 
 func (i HostnameItem) PrintPrefix() {
-	fmt.Print(" ")
+	// fmt.Print(" ")
 }
