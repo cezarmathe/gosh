@@ -1,32 +1,24 @@
 package shell
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/cezarmathe/gosh/builtin"
 	"github.com/cezarmathe/gosh/command"
 )
 
-func interpret() {
-	shellPrompt.Print()
-
-	text, err := readInput()
-
-	if err != nil {
-		fmt.Println(err)
-		return
+func interpret(cmd string) error {
+	cmd = strings.TrimRight(cmd, "\r\n")
+	// no command was actually issued.
+	if cmd == "" {
+		return nil
 	}
 
-	com := command.GetCommand(text)
+	com := command.GetCommand(cmd)
 
 	if builtin.BuiltinCommand(com) {
-		return
+		return nil
 	}
 
-	com.Execute()
-
-}
-
-func readInput() (string, error) {
-	return reader.ReadString('\n')
+	return com.Execute()
 }

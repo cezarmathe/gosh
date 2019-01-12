@@ -2,23 +2,30 @@ package shell
 
 import (
 	"bufio"
+	"fmt"
+	"io"
+	"os"
 
-	"github.com/cezarmathe/gosh/shell/prompt"
-)
-
-var (
-	shellPrompt prompt.Prompt
-	reader      *bufio.Reader
+	"github.com/cezarmathe/gosh/prompt"
 )
 
 // Run contains the entire shell lifecycle
 func Run() {
-
-	initialize()
-
-	defer terminate()
-
+	reader := bufio.NewReader(os.Stdin)
+	shellPrompt := prompt.New(":")
 	for {
-		interpret()
+		fmt.Print(shellPrompt)
+		input, err := reader.ReadString('\n')
+
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			fmt.Fprintln(os.Stderr, err)
+		}
+
+		if err = interpret(input); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 	}
 }

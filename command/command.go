@@ -1,7 +1,7 @@
 package command
 
 import (
-	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -30,15 +30,11 @@ func GetCommand(text string) Command {
 
 // HasArgs returns true if the command has arguments or false if it does not have arguments
 func (c Command) HasArgs() bool {
-	if len(c.Args) == 0 {
-		return false
-	}
-	return true
+	return len(c.Args) > 0
 }
 
 // Execute executes the command
-func (c Command) Execute() {
-
+func (c Command) Execute() error {
 	var cmd *exec.Cmd
 
 	if c.HasArgs() {
@@ -47,7 +43,8 @@ func (c Command) Execute() {
 		cmd = exec.Command(c.Exec)
 	}
 
-	out, _ := cmd.CombinedOutput()
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
 
-	fmt.Printf("%s\n", out)
+	return cmd.Run()
 }
