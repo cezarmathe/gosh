@@ -4,5 +4,5 @@ package prompt
 type Item interface {
 	Generate() Item
 	Prefix()
-	Print()
+	String() string
 }

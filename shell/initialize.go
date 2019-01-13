@@ -5,41 +5,25 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cezarmathe/gosh/process"
-
-	"github.com/cezarmathe/gosh/builtin/promptitems"
-	"github.com/cezarmathe/gosh/shell/prompt"
+	"github.com/cezarmathe/gosh/builtin"
 )
 
 const (
 	// shellLoginText contains that gets printed when the shell is initialized
-	shellLoginText = "Hello, %user%"
+	shellLoginText = "Gosh v0.1.0\n"
 )
 
 func initialize() {
-	fmt.Println(shellLoginText)
+	fmt.Print(shellLoginText)
 
-	// initialize the process controller
-	processController = process.NewProcessController()
-
-	// load the default process files
-	shellFiles = make([]*os.File, 3)
-	shellFiles[0] = os.Stdin
-	shellFiles[1] = os.Stdout
-	shellFiles[2] = os.Stderr
+	// todo: add configuration
 
 	// initialize the reader
 	reader = bufio.NewReader(os.Stdin)
 
 	// load the prompt with prompt items
-	shellPrompt = prompt.Prompt{
-		Items: []prompt.Item{
-			promptitems.UserItem{},
-			promptitems.HostnameItem{},
-			promptitems.WorkdirItem{},
-			promptitems.CommandpromptItem{},
-		},
-	}
+	// todo: load prompt items if the prompt is configured in the config file
+	shellPrompt = builtin.Prompt()
 
 	// generate the content of each prompt item
 	shellPrompt.Generate()

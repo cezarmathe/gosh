@@ -1,34 +1,64 @@
 package shell
 
 import (
-	"fmt"
+	"io"
 	"os"
+	"os/exec"
 	"strings"
+
+	"github.com/cezarmathe/gosh/builtin"
 )
 
-func interpret() {
+func interpret() error {
+	// todo: add signal listener
+
 	// print the prompt
 	shellPrompt.Print()
 
 	// read user input
-	text, err := readInput()
+	input, err := readInput()
+
+	// return errors
+	if err != nil {
+		if err == io.EOF {
+			return err
+		}
+		return err
+	}
+
+	input = strings.TrimRight(input, "\r\n")
+
+	// if no input is given, skip the cycle
+	if input == "" {
+		return nil
+	}
+
+	// todo: add history
+
+	// separate the input in arguments
+	argv := strings.Fields(input)
+
+	// check if the command is a builtin command
+	fn, err := builtin.Check(argv)
+	if err == nil {
+		err = fn(argv)
+		return err
+	}
+
+	// otherwise, execute the command
+	cmd := exec.Command("bash", "-c", input)
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 
-	// if no input is given, return
-	if text == "" {
-		return
-	}
-
-	fields := strings.Fields(text)
-	if len(fields) == 1 {
-		processController.StartProcess(fields[0], []string{}, &os.ProcAttr{Files: shellFiles})
-	} else {
-		processController.StartProcess(fields[0], fields[1:], &os.ProcAttr{Files: shellFiles})
-	}
+	return nil
 
 }
 
