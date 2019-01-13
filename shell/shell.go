@@ -6,26 +6,32 @@ import (
 	"io"
 	"os"
 
-	"github.com/cezarmathe/gosh/prompt"
+	"github.com/cezarmathe/gosh/shell/prompt"
+)
+
+var (
+	// shellPrompt contains what gets displayed each time the user is prompted for input
+	shellPrompt prompt.Prompt
+	// reader reads the user input
+	reader *bufio.Reader
 )
 
 // Run contains the entire shell lifecycle
 func Run() {
-	reader := bufio.NewReader(os.Stdin)
-	shellPrompt := prompt.New(":")
+	// initialize the shell
+	initialize()
+
+	// interpret each input indefinetly
 	for {
-		fmt.Print(shellPrompt)
-		input, err := reader.ReadString('\n')
-
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			fmt.Fprintln(os.Stderr, err)
+		err := interpret()
+		if err == nil {
+			continue
 		}
-
-		if err = interpret(input); err != nil {
+		if err == io.EOF {
 			fmt.Fprintln(os.Stderr, err)
+			break
 		}
+		fmt.Println(err)
 	}
+
 }
