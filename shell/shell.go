@@ -18,7 +18,6 @@ var (
 
 // Run contains the entire shell lifecycle
 func Run() {
-
 	// initialize the shell
 	initialize()
 
@@ -34,4 +33,5 @@ func Run() {
 		}
 		fmt.Println(err)
 	}
+
 }
